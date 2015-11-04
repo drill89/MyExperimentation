@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Leaflet.draw drawing and editing tools</title>
+
+	<link rel="stylesheet" href="libs/leaflet.css" />
+	<link rel="stylesheet" href="../dist/leaflet.draw.css" />
+	
+
+	<script src="libs/leaflet-src.js"></script>
+
+	<script src="../src/Leaflet.draw.js"></script>
+
+	<script src="../src/edit/handler/Edit.Poly.js"></script>
+	<script src="../src/edit/handler/Edit.SimpleShape.js"></script>
+	<script src="../src/edit/handler/Edit.Circle.js"></script>
+	<script src="../src/edit/handler/Edit.Rectangle.js"></script>
+
+	<script src="../src/draw/handler/Draw.Feature.js"></script>
+	<script src="../src/draw/handler/Draw.Polyline.js"></script>
+	<script src="../src/draw/handler/Draw.Polygon.js"></script>
+	<script src="../src/draw/handler/Draw.SimpleShape.js"></script>
+	<script src="../src/draw/handler/Draw.Rectangle.js"></script>
+	<script src="../src/draw/handler/Draw.Circle.js"></script>
+	<script src="../src/draw/handler/Draw.Marker.js"></script>
+
+	<script src="../src/ext/LatLngUtil.js"></script>
+	<script src="../src/ext/GeometryUtil.js"></script>
+	<script src="../src/ext/LineUtil.Intersect.js"></script>
+	<script src="../src/ext/Polyline.Intersect.js"></script>
+	<script src="../src/ext/Polygon.Intersect.js"></script>
+
+	<script src="../src/Control.Draw.js"></script>
+	<script src="../src/Tooltip.js"></script>
+	<script src="../src/Toolbar.js"></script>
+
+	<script src="../src/draw/DrawToolbar.js"></script>
+	<script src="../src/edit/EditToolbar.js"></script>
+	<script src="../src/edit/handler/EditToolbar.Edit.js"></script>
+	<script src="../src/edit/handler/EditToolbar.Delete.js"></script>
+</head>
+<body>
+	<div id="map" style="width: 800px; height: 600px; border: 1px solid #ccc"></div>
+	<button id="showHolons">Show Holons</button>
+	<button id="constructHolons">Construct Holons</button>
+	<script>
+		var osmUrl = 'http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
+			osmAttrib = '&copy; <a href="http://openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+			osm = L.tileLayer(osmUrl, {maxZoom: 18, attribution: osmAttrib}),
+			map = new L.Map('map', {layers: [osm], center: new L.LatLng(49.866417, 8.654165), zoom: 18 });
+
+		var drawnItems = new L.FeatureGroup();
+		map.addLayer(drawnItems);
+
+		// Set the title to show on the polygon button
+		L.drawLocal.draw.toolbar.buttons.polygon = 'Draw a sexy polygon!';
+
+		var drawControl = new L.Control.Draw({
+			position: 'topright',
+			draw: {
+				polyline: {
+					metric: true
+				},
+				polygon: {
+					allowIntersection: false,
+					showArea: true,
+					drawError: {
+						color: '#b00b00',
+						timeout: 1000
+					},
+					shapeOptions: {
+						color: '#bada55'
+					}
+				},
+				circle: {
+					shapeOptions: {
+						color: '#662d91'
+					}
+				},
+				marker: false
+			},
+			edit: {
+				featureGroup: drawnItems,
+				remove: false
+			}
+		});
+		map.addControl(drawControl);
+
+		var holon = [[49.866539, 8.653636], [49.866354, 8.65369], [49.866351, 8.653848], [49.866564, 8.653771]];
+		var holon2 = [[49.866333,8.653072],[49.866244,8.653099],[49.866279,8.653372],[49.86637,8.653344]];
+		var holon3 = [[49.866641,8.652934],[49.866521,8.65297],[49.866543,8.653163],[49.866666,8.653127]];
+		var holon4 = [[49.866821,8.652884],[49.866673,8.652926],[49.866696,8.653118],[49.866845,8.653076]];
+		var holon5 = [[49.866985,8.652838],[49.866842,8.652877],[49.866867,8.653069],[49.867008,8.653028]];
+		var holon6 = [[49.867153,8.652788],[49.867015,8.652826],[49.867038,8.65302],[49.867174,8.652981]];
+		var holon7 = [[49.866509,8.654595],[49.86642,8.654622],[49.866445,8.654816],[49.866536,8.654785]];
+		var holon8 = [[49.86662,8.654578],[49.866514,8.654609],[49.866532,8.654756],[49.866638,8.654721]];
+		var holon9 = [[49.866705,8.654516],[49.866616,8.654546],[49.866644,8.654753],[49.866731,8.654727]];
+		var holon10 = [[49.866923,8.654486],[49.866786,8.654536],[49.866814,8.654721],[49.86695,8.654678]];
+		var holon11 = [[49.867098,8.65404],[49.866964,8.654076],[49.866986,8.654275],[49.86712,8.654234]];
+
+		var p1 = L.polygon(holon, {color : "#ff7800", weight : 1}).addTo(map);
+		var p2 = L.polygon(holon2, {color : "#ff7800", weight : 1}).addTo(map);
+		var p3 = L.polygon(holon3, {color : "#662d91", weight : 1}).addTo(map);
+		var p4 = L.polygon(holon4, {color : "#662d91", weight : 1}).addTo(map);
+		var p5 = L.polygon(holon5, {color : "#662d91", weight : 1}).addTo(map);
+		var p6 = L.polygon(holon6, {color : "#b00b00", weight : 1}).addTo(map);
+		var p7 = L.polygon(holon7, {color : "#b00b00", weight : 1}).addTo(map);
+		var p8 = L.polygon(holon8, {color : "#b00b00", weight : 1}).addTo(map);
+		var p9 = L.polygon(holon9, {color : "#bada55", weight : 1}).addTo(map);
+		var p10 = L.polygon(holon10, {color : "#bada55", weight : 1}).addTo(map);
+		var p11 = L.polygon(holon11, {color : "#bada55", weight : 1}).addTo(map);
+
+		var polygons = [p1, p2, p3, p4, p5, p6, p7, p8, p9, p10, p11];
+
+		map.on('draw:created', function (e) {
+			var type = e.layerType,
+				layer = e.layer;
+
+			if (type === 'marker') {
+				layer.bindPopup('A popup!');
+			}
+
+			drawnItems.addLayer(layer);
+		});
+
+		map.on('draw:edited', function (e) {
+			var layers = e.layers;
+			var countOfEditedLayers = 0;
+			layers.eachLayer(function(layer) {
+				countOfEditedLayers++;
+			});
+			console.log("Edited " + countOfEditedLayers + " layers");
+		});
+
+		var visible = true;
+
+		L.DomUtil.get('showHolons').onclick = function () {
+			for (var poly in polygons) {
+				if (visible) {
+					polygons[poly].setStyle({
+						opacity : 0.0,
+						fillOpacity : 0.0
+					});
+				} else {
+					polygons[poly].setStyle({
+						opacity : 0.4,
+						fillOpacity : 0.3
+					});
+				}
+
+				if (poly == polygons.length - 1) {
+					visible = !visible;
+				}
+			}
+		};
+
+		var i = 0;
+		L.DomUtil.get('constructHolons').onclick = function () {
+			window.setInterval(function() {
+				if (i == polygons.length) {
+					return;
+				}
+				polygons[i].setStyle({
+					opacity : 0.4,
+					fillOpacity : 0.3
+				}).bindPopup("Hello World!");
+				i++;
+			}, 2000);
+		};
+		//for (var poly in polygons) {
+				//polygons[i].bindPopup("Hello World!");
+		
+		//p1.addeventlistener("mousemove", 'HelloWorld');
+		
+		//map.p1.onmouseover.bindPopup('Hello World');
+		/*L.DomUtil.get('polygons').onmouseover = function () {
+			for (var poly in polygons) {
+				poly.onmouseover.bindPopup('Hello World!');
+			}
+		}*/
+
+	</script>
+</body>
+</html>

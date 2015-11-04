@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Leaflet.draw drawing and editing tools</title>
+
+	<link rel="stylesheet" href="libs/leaflet.css" />
+	<link rel="stylesheet" href="../dist/leaflet.draw.css" />
+	
+
+	<script src="libs/leaflet-src.js"></script>
+
+	<script src="../src/Leaflet.draw.js"></script>
+
+	<script src="../src/edit/handler/Edit.Poly.js"></script>
+	<script src="../src/edit/handler/Edit.SimpleShape.js"></script>
+	<script src="../src/edit/handler/Edit.Circle.js"></script>
+	<script src="../src/edit/handler/Edit.Rectangle.js"></script>
+
+	<script src="../src/draw/handler/Draw.Feature.js"></script>
+	<script src="../src/draw/handler/Draw.Polyline.js"></script>
+	<script src="../src/draw/handler/Draw.Polygon.js"></script>
+	<script src="../src/draw/handler/Draw.SimpleShape.js"></script>
+	<script src="../src/draw/handler/Draw.Rectangle.js"></script>
+	<script src="../src/draw/handler/Draw.Circle.js"></script>
+	<script src="../src/draw/handler/Draw.Marker.js"></script>
+
+	<script src="../src/ext/LatLngUtil.js"></script>
+	<script src="../src/ext/GeometryUtil.js"></script>
+	<script src="../src/ext/LineUtil.Intersect.js"></script>
+	<script src="../src/ext/Polyline.Intersect.js"></script>
+	<script src="../src/ext/Polygon.Intersect.js"></script>
+
+	<script src="../src/Control.Draw.js"></script>
+	<script src="../src/Tooltip.js"></script>
+	<script src="../src/Toolbar.js"></script>
+
+	<script src="../src/draw/DrawToolbar.js"></script>
+	<script src="../src/edit/EditToolbar.js"></script>
+	<script src="../src/edit/handler/EditToolbar.Edit.js"></script>
+	<script src="../src/edit/handler/EditToolbar.Delete.js"></script>
+</head>
+<body>
+	<div id="map" style="width: 800px; height: 600px; border: 1px solid #ccc"></div>
+	<button id="showHolons">Show Holons</button>
+	<button id="constructHolons">Construct Holons</button>
+	<script>
+		var osmUrl = 'http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
+			osmAttrib = '&copy; <a href="http://openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+			osm = L.tileLayer(osmUrl, {maxZoom: 20, attribution: osmAttrib}),
+			map = new L.Map('map', {layers: [osm], center: new L.LatLng(49.866417, 8.654165), zoom: 18 });
+
+		var drawnItems = new L.FeatureGroup();
+		map.addLayer(drawnItems);
+
+		// Set the title to show on the polygon button
+		L.drawLocal.draw.toolbar.buttons.polygon = 'Draw a sexy polygon!';
+
+		var drawControl = new L.Control.Draw({
+			position: 'topright',
+			draw: {
+				polyline: {
+					metric: true
+				},
+				polygon: {
+					allowIntersection: false,
+					showArea: true,
+					drawError: {
+						color: '#b00b00',
+						timeout: 1000
+					},
+					shapeOptions: {
+						color: '#bada55'
+					}
+				},
+				circle: {
+					shapeOptions: {
+						color: '#662d91'
+					}
+				},
+				marker: false
+			},
+			edit: {
+				featureGroup: drawnItems,
+				remove: false
+			}
+		});
+		map.addControl(drawControl);
+
+		var holon = [[49.866539, 8.653636],[49.866354, 8.65369],[49.866351, 8.653848],[49.866564, 8.653771]];
+		var holon2 = [[49.866333,8.653072],[49.866244,8.653099],[49.866279,8.653372],[49.86637,8.653344]];
+		var holon3 = [[49.866641,8.652934],[49.866521,8.65297],[49.866543,8.653163],[49.866666,8.653127]];
+		var holon4 = [[49.866821,8.652884],[49.866673,8.652926],[49.866696,8.653118],[49.866845,8.653076]];
+		var holon5 = [[49.866985,8.652838],[49.866842,8.652877],[49.866867,8.653069],[49.867008,8.653028]];
+		var holon6 = [[49.867153,8.652788],[49.867015,8.652826],[49.867038,8.65302],[49.867174,8.652981]];
+		var holon7 = [[49.866509,8.654595],[49.86642,8.654622],[49.866445,8.654816],[49.866536,8.654785]];
+		var holon8 = [[49.86662,8.654578],[49.866514,8.654609],[49.866532,8.654756],[49.866638,8.654721]];
+		var holon9 = [[49.866705,8.654516],[49.866616,8.654546],[49.866644,8.654753],[49.866731,8.654727]];
+		var holon10 = [[49.866923,8.654486],[49.866786,8.654536],[49.866814,8.654721],[49.86695,8.654678]];
+		var holon11 = [[49.867098,8.65404],[49.866964,8.654076],[49.866986,8.654275],[49.86712,8.654234]];
+		var holon12 = [[49.867194,8.654378],[49.867215,8.654584],[49.867018,8.65464],[49.866992,8.654431]];
+		var holon13 = [[49.866939,8.654061],[49.866968,8.654243],[49.866825,8.654294],[49.866797,8.654112]];
+		var holon14 = [[49.866778,8.654123],[49.866797,8.654265],[49.866674,8.654302],[49.866655,8.65416]];
+		var holon15 = [[49.866641,8.654168],[49.86666,8.654311],[49.866548,8.654348],[49.866525,8.654203]];
+		var holon16 = [[49.866513,8.654211],[49.866534,8.654345],[49.866427,8.654388],[49.866403,8.654246]];
+		var holon17 = [[49.867006,8.653691],[49.867003,8.653809],[49.86685,8.653812] ,[49.866856,8.653691]];
+		var holon18 = [[49.866112,8.653538],[49.866033,8.653576],[49.865964,8.653109],[49.866043,8.653082]];
+		var holon19 = [[49.865901,8.65313],[49.865931,8.65334 ],[49.865772,8.653391],[49.865751,8.653187]];
+		var holon20 = [[49.865732,8.653197],[49.86576,8.653407],[49.865616,8.653455],[49.86558,8.653254]];
+		var holon21 = [[49.865478,8.653291],[49.865509,8.653503],[49.865258,8.653592],[49.865227,8.653374]];
+		var holon22 = [[49.866119,8.653651],[49.866133,8.653769],[49.866024,8.653796],[49.86601,8.653677]];
+		var holon23 = [[49.866135,8.653785],[49.866149,8.653916],[49.866031,8.653956],[49.866008,8.653822]];
+		var holon24 = [[49.866155,8.653935],[49.86618,8.654128],[49.866097,8.654174],[49.866066,8.653967]];
+		var holon25 = [[49.866204,8.654404],[49.86624,8.654699],[49.866142,8.654724],[49.866107,8.654426]];
+		var holon26 = [[49.866093,8.654426],[49.866105,8.654589],[49.866003,8.654608],[49.865991,8.654442]];
+		var holon27 = [[49.865979,8.654442],[49.865991,8.654608],[49.865865,8.65463],[49.865851,8.654455]];
+		var holon28 = [[49.866266,8.65471],[49.866294,8.654919],[49.866161,8.654954],[49.866138,8.65474]];
+		var holon29 = [[49.866297,8.654935],[49.86633,8.655171],[49.866171,8.65523],[49.866136,8.654986]];
+		var holon30 = [[49.866577,8.655099],[49.866608,8.655314],[49.866506,8.655351],[49.866472,8.655131]];
+		var holon31 = [[49.866626,8.655324],[49.866655,8.65556],[49.86657,8.655603],[49.866536,8.655357]];
+		var holon32 = [[49.867717,8.655445],[49.867718,8.655609],[49.867613,8.655611],[49.867615,8.655448]];
+		var holon33 = [[49.867606,8.65544],[49.867601,8.655606],[49.867457,8.655603],[49.867454,8.655437]];
+		var holon34 = [[49.867435,8.655429],[49.867442,8.655686],[49.867345,8.655684],[49.86734,8.655437]];
+		var holon35 = [[49.867369,8.655112],[49.867405,8.655378],[49.867317,8.655408],[49.867284,8.655139]];
+		var holon36 = [[49.867331,8.655539],[49.867331,8.655692],[49.867233,8.6557],[49.867231,8.655544]];
+		var holon37 = [[49.867219,8.655547],[49.867219,8.655695],[49.867117,8.655697],[49.867117,8.655547]];
+		var holon38 = [[49.867044,8.655485],[49.867067,8.655657],[49.866959,8.655697],[49.866939,8.655528]];
+		var holon39 = [[49.866927,8.655534],[49.866946,8.655697],[49.866809,8.655745],[49.866785,8.655582]];
+		var holon40 = [[49.866783,8.655662],[49.86679,8.655786],[49.866626,8.655804],[49.866624,8.655668]];
+		var holon41 = [[49.866482,8.652943],[49.866508,8.653133],[49.866389,8.653173],[49.866356,8.652988]];
+
+
+
+
+
+
+
+		var p1 = L.polygon(holon, {color:  "#01DFd7", fillColor: "#01DFd7", fillOpacity:1 , weight : 1}).addTo(map); //32a
+		var p2 = L.polygon(holon2, {color:  "#01DFd7", fillColor: "#01DFd7", fillOpacity:1 , weight : 1}).addTo(map); //28
+		var p3 = L.polygon(holon3, {color:  "#08088A", fillColor: "#08088A", fillOpacity:1 , weight : 1}).addTo(map); //24
+		var p4 = L.polygon(holon4, {color:  "#01DFd7", fillColor: "#01DFd7", fillOpacity:1 , weight : 1}).addTo(map); //22
+		var p5 = L.polygon(holon5, {color:  "#01DFd7", fillColor: "#01DFd7", fillOpacity:1 , weight : 1}).addTo(map); //20
+		var p6 = L.polygon(holon6, {color:  "#08088A", fillColor: "#08088A", fillOpacity:1 , weight : 1}).addTo(map); //18
+		var p7 = L.polygon(holon7, {color:  "#01DFd7", fillColor: "#01DFd7", fillOpacity:1 , weight : 1}).addTo(map); //34
+		var p8 = L.polygon(holon8, {color:  "#FF0000", fillColor: "#FF0000", fillOpacity:1 , weight : 1}).addTo(map); //40
+		var p9 = L.polygon(holon9, {color:  "#FF0000", fillColor: "#FF0000", fillOpacity:1 , weight : 1}).addTo(map); //38
+		var p10 = L.polygon(holon10, {color:  "#08088A", fillColor: "#08088A", fillOpacity:1 , weight : 1}).addTo(map); //36
+		var p11 = L.polygon(holon11, {color:  "#01DFd7", fillColor: "#01DFd7", fillOpacity:1 , weight : 1}).addTo(map); //29
+		var p12 = L.polygon(holon12, {color:  "#FF0000", fillColor: "#FF0000", fillOpacity:1 , weight:  1}).addTo(map); //32
+		var p13 = L.polygon(holon13, {color:  "#01DFd7", fillColor: "#01DFd7", fillOpacity:1 , weight:  1}).addTo(map); //31
+		var p14 = L.polygon(holon14,{color:  "#01DFd7", fillColor: "#01DFd7", fillOpacity:1 , weight:  1}).addTo(map); //33
+		var p15 = L.polygon(holon15,{color:  "#08088A", fillColor: "#08088A", fillOpacity:1 , weight:  1}).addTo(map); //35
+                var p16 = L.polygon(holon16,{color:  "#08088A", fillColor: "#08088A", fillOpacity:1 , weight:  1}).addTo(map); //37
+                var p17 = L.polygon(holon17,{color:  "#08088A", fillColor: "#08088A", fillOpacity:1 , weight:  1}).addTo(map); //27
+                var p18 = L.polygon(holon18,{color:  "#08088A", fillColor: "#08088A", fillOpacity:1 , weight:  1}).addTo(map); //39 O
+                var p19 = L.polygon(holon19,{color:  "#FF0000", fillColor: "#FF0000", fillOpacity:1 , weight:  1}).addTo(map); //30 O
+                var p20 = L.polygon(holon20,{color:  "#01DFd7", fillColor: "#01DFd7", fillOpacity:1 , weight:  1}).addTo(map); //32 O
+                var p21 = L.polygon(holon21,{color:  "#08088A", fillColor: "#08088A", fillOpacity:1 , weight:  1}).addTo(map); //34 O
+                var p22 = L.polygon(holon22,{color:  "#08088A", fillColor: "#08088A", fillOpacity:1 , weight:  1}).addTo(map); //41 O
+                var p23 = L.polygon(holon23,{color:  "#08088A", fillColor: "#08088A", fillOpacity:1 , weight:  1}).addTo(map); //43 O
+                var p24 = L.polygon(holon24,{color:  "#08088A", fillColor: "#08088A", fillOpacity:1 , weight:  1}).addTo(map); //45 O
+                var p25 = L.polygon(holon25,{color:  "#FF0000", fillColor: "#FF0000", fillOpacity:1 , weight:  1}).addTo(map); //47 O
+                var p26 = L.polygon(holon26,{color:  "#FF0000", fillColor: "#FF0000", fillOpacity:1 , weight:  1}).addTo(map); //49 0 
+                var p27 = L.polygon(holon27,{color:  "#01DFd7", fillColor: "#01DFd7", fillOpacity:1 , weight:  1}).addTo(map); //51 O
+                var p28 = L.polygon(holon28,{color:  "#FF0000", fillColor: "#FF0000", fillOpacity:1 , weight:  1}).addTo(map); //53 O 
+                var p29 = L.polygon(holon29,{color:  "#01DFd7", fillColor: "#01DFd7", fillOpacity:1 , weight:  1}).addTo(map); //55 O
+                var p30 = L.polygon(holon30,{color:  "#FF0000", fillColor: "#FF0000", fillOpacity:1 , weight:  1}).addTo(map); //38 R
+                var p31 = L.polygon(holon31,{color:  "#FF0000", fillColor: "#FF0000", fillOpacity:1 , weight:  1}).addTo(map); //40 R
+                var p32 = L.polygon(holon32,{color:  "#FF0000", fillColor: "#FF0000", fillOpacity:1 , weight:  1}).addTo(map); //41 R
+                var p33 = L.polygon(holon33,{color:  "#01DFd7", fillColor: "#01DFd7", fillOpacity:1 , weight:  1}).addTo(map); //43 R
+                var p34 = L.polygon(holon34,{color:  "#08088A", fillColor: "#08088A", fillOpacity:1 , weight:  1}).addTo(map); //45 R
+                var p35 = L.polygon(holon35,{color:  "#FF0000", fillColor: "#FF0000", fillOpacity:1 , weight:  1}).addTo(map); //45A R
+                var p36 = L.polygon(holon36,{color:  "#FF0000", fillColor: "#FF0000", fillOpacity:1 , weight:  1}).addTo(map); //47 R 
+                var p37 = L.polygon(holon37,{color:  "#01DFd7", fillColor: "#01DFd7", fillOpacity:1 , weight:  1}).addTo(map); //49 R
+                var p38 = L.polygon(holon38,{color:  "#FF0000", fillColor: "#FF0000", fillOpacity:1 , weight:  1}).addTo(map); //51 R
+                var p39 = L.polygon(holon39,{color:  "#08088A", fillColor: "#08088A", fillOpacity:1 , weight:  1}).addTo(map); //53 R
+                var p40 = L.polygon(holon40,{color:  "#FF0000", fillColor: "#FF0000", fillOpacity:1 , weight:  1}).addTo(map); //55 R
+		var p41 = L.polygon(holon41,{color:  "#01DFd7", fillColor: "#01DFd7", fillOpacity:1 , weight:  1}).addTo(map).bindPopup('This is House number 26!!<br>Aditya<br>Heinheimer strasse<br>'); //26
+
+            
+                var polygons = [p1, p2, p3, p4, p5, p6, p7, p8, p9, p10, p11, p12, p13, p14 ,p15, p16, p17, p18, p19, p20, p21,p22, p23, p24, p25, p26, p27, p28, p29, p30, p31, p32, p33, p34, p35, p36, p37, p38, p39, p40, p41];
+
+		map.on('draw:created', function (e) {
+			var type = e.layerType,
+				layer = e.layer;
+
+			if (type === 'marker') {
+				layer.bindPopup('A popup!');
+			}
+
+			drawnItems.addLayer(layer);
+		});
+
+		map.on('draw:edited', function (e) {
+			var layers = e.layers;
+			var countOfEditedLayers = 0;
+			layers.eachLayer(function(layer) {
+				countOfEditedLayers++;
+			});
+			console.log("Edited " + countOfEditedLayers + " layers");
+		});
+
+		var visible = true;
+
+		L.DomUtil.get('showHolons').onclick = function () {
+			for (var poly in polygons) {
+				if (visible) {
+					polygons[poly].setStyle({
+						opacity : 0.0,
+						fillOpacity : 0.0
+					});
+				} else {
+					polygons[poly].setStyle({
+						opacity : 0.4,
+						fillOpacity : 0.3
+					});
+				}
+
+				if (poly == polygons.length - 1) {
+					visible = !visible;
+				}
+			}
+		};
+
+		var i = 0;
+		L.DomUtil.get('constructHolons').onclick = function () {
+			window.setInterval(function() {
+				if (i == polygons.length) {
+					return;
+				}
+				polygons[i].setStyle({
+					opacity : 0.4,
+					fillOpacity : 0.3
+				});
+				i++;
+			}, 2000);
+		};
+		for(i in polygons)
+			polygons[i].bindPopup("<b>Lights : </b>60W<br><b>SolarPanel : </b>3.5KW<br><b>Refrigerator : </b>150W");
+		
+	</script>
+</body>
+</html>
